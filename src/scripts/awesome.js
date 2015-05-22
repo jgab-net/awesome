@@ -14,9 +14,12 @@ angular
       scope: {
         placeholder: '@?',
         base: '@list',
-        show: '@'
+        filter: '@'
       },
       controller: function ($scope) {
+        this.filter = this.filter || 'label';
+        this.placeholder = this.placeholder || 'search...';
+
         var expression = this.base.match( /^\s*(\w+)\s+in\s+([\w.]+)\s*$/i );
         if (!expression) {
           throw(new Error("list only supports ITEM in COLLECTION syntax."));
@@ -38,20 +41,20 @@ angular
           var transclude = function (clone, childScope) {
             childScope[scope.awesome.item] = collection[i];
 
-            remove[collection[i][scope.awesome.show]] = {
+            remove[collection[i][scope.awesome.filter]] = {
               clone: angular.element('<li/>').append(clone),
               scope: childScope,
               clear: false
             };
 
-            $list.append(remove[collection[i][scope.awesome.show]].clone);
+            $list.append(remove[collection[i][scope.awesome.filter]].clone);
           };
 
           for (var i=0, l=collection.length; i<l; i++) {
 
             //TODO spaces in properties.
-            if (remove[collection[i][scope.awesome.show]]) {
-              remove[collection[i][scope.awesome.show]].clear = false;
+            if (remove[collection[i][scope.awesome.filter]]) {
+              remove[collection[i][scope.awesome.filter]].clear = false;
               continue;
             }
 
@@ -75,14 +78,14 @@ angular
         $input.on('input', function () {
           var value = $input.html();
           scope.awesome.suggestions = AwesomeService.filter(
-            scope.awesome.list, scope.awesome.show, value
+            scope.awesome.list, scope.awesome.filter, value
           );
           scope.$apply();
         });
 
         $input.on('focusin', function () {
           scope.awesome.suggestions = AwesomeService.filter(
-            scope.awesome.list, scope.awesome.show
+            scope.awesome.list, scope.awesome.filter
           );
           if ($input.find('.aw-placeholder').length !== 0) {
             $input.html('');
