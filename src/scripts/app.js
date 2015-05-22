@@ -6,7 +6,7 @@ angular
 
     this.list = Dictionary.query();
 
-    this.test = function () {      
+    this.test = function () {
       this.list.push ({
         "_id":"5532fdef4a8f7cd53c0fdc35",
         "parent":"5532fdef4a8f7cd53c0fdc33",
@@ -26,5 +26,6 @@ angular
         "root":false,
         "id":"5532fdef4a8f7cd53c0fdc35"
       });
+
     }.bind(this);
   });

@@ -14,7 +14,8 @@ angular
       scope: {
         placeholder: '@?',
         base: '@list',
-        filter: '@'
+        filter: '@',
+        childrens: '@'
       },
       controller: function ($scope) {
         this.filter = this.filter || 'label';
@@ -26,70 +27,59 @@ angular
         }
 
         this.item = expression[1];
-        this.list = AwesomeService.flatTree($parse(expression[2])($scope.$parent));
+        this.list = [AwesomeService.flatTree($parse(expression[2])($scope.$parent))];
       },
       link: function (scope, element, attrs, ngModel, $transclude) {
         var $input = element.find('.aw-input');
         var $placeholder = element.find('.aw-placeholder');
         var $list = element.find('.aw-list');
 
-        var remove = {};
-
         scope.$watchCollection('awesome.suggestions', function (collection) {
           if (!collection) return;
 
           var transclude = function (clone, childScope) {
             childScope[scope.awesome.item] = collection[i];
-
-            remove[collection[i][scope.awesome.filter]] = {
-              clone: angular.element('<li/>').append(clone),
-              scope: childScope,
-              clear: false
-            };
-
-            $list.append(remove[collection[i][scope.awesome.filter]].clone);
+            $list.append(AwesomeService.cache.store(collection[i][scope.awesome.filter], clone, childScope));
           };
 
           for (var i=0, l=collection.length; i<l; i++) {
-
             //TODO spaces in properties.
-            if (remove[collection[i][scope.awesome.filter]]) {
-              remove[collection[i][scope.awesome.filter]].clear = false;
+            if (AwesomeService.cache.exists(collection[i][scope.awesome.filter])) {
               continue;
             }
-
             $transclude(transclude);
           }
 
-          if (remove) {
-            for (var key in remove){
-              if (remove[key].clear) {
-                remove[key].clone.remove();
-                remove[key].scope.$destroy();
-                delete remove[key];
-              } else {
-                remove[key].clear = true;
-              }
-            }
-            console.log(remove);
-          }
+          AwesomeService.cache.clear();
         });
 
         $input.on('input', function () {
           var value = $input.html();
           scope.awesome.suggestions = AwesomeService.filter(
-            scope.awesome.list, scope.awesome.filter, value
+            scope.awesome.list[scope.awesome.list.length-1], scope.awesome.filter, value
           );
           scope.$apply();
         });
 
         $input.on('focusin', function () {
-          scope.awesome.suggestions = AwesomeService.filter(
-            scope.awesome.list, scope.awesome.filter
-          );
           if ($input.find('.aw-placeholder').length !== 0) {
             $input.html('');
+            scope.awesome.suggestions = AwesomeService.filter(
+              scope.awesome.list[scope.awesome.list.length-1], scope.awesome.filter
+            );
           }
+          scope.$apply();
+        });
+
+        $input.on('keydown', function (event) {
+          var keyCode = event.which || event.keyCode;
+
+          if ((keyCode == 13 || keyCode == 9)) {
+            scope.awesome.suggestions = scope.awesome.suggestions[0][scope.awesome.childrens];
+            scope.awesome.list.push(scope.awesome.suggestions);
+            $input.html('');
+          }
+
           scope.$apply();
         });
 

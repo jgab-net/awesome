@@ -20,9 +20,10 @@
     <net-awesome
       ng-model="main.item"
       list="item in main.list"
-      placeholder="placeholder">
+      placeholder="placeholder"
+      childrens="items">
 
-      <span>{{ item.label }}</span>
+      <net-awesome-item></net-awesome-item>
 
     </net-awesome>
 

@@ -25,4 +25,36 @@ angular
 
     };
 
+    this.cache = {
+      stored: {},
+      store: function (key, clone, scope) {
+        this.stored[key] = {
+          clone: angular.element('<li/>', {class: 'list-group-item'}).append(clone),
+          scope: scope,
+          clear: false
+        };
+        return this.stored[key].clone;
+      },
+      exists: function (key) {
+        if (this.stored[key]) {                    
+          this.stored[key].clear = false;
+          return true;
+        }
+        return false;
+      },
+      clear: function () {
+        if (this.stored) {
+          for (var key in this.stored){
+            if (this.stored[key].clear) {
+              this.stored[key].clone.remove();
+              this.stored[key].scope.$destroy();
+              delete this.stored[key];
+            } else {
+              this.stored[key].clear = true;
+            }
+          }
+        }
+      }
+    }
+
   });
