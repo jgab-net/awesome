@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="demo">
 <head>
   <meta charset="UTF-8">
   <title>Document</title>
@@ -11,13 +11,36 @@
   <!-- endbower -->
 
   <!-- inject:css -->
+  <link rel="stylesheet" href="/src/styles/main.css">
   <!-- endinject -->
 </head>
-<body>
+<body ng-controller="MainController as main">
+  <div class="container">
+
+    <net-awesome
+      ng-model="main.item"
+      list="item in main.list"
+      placeholder="placeholder"
+      show="label">
+
+      <span>{{ item.label }}</span>
+
+    </net-awesome>
+
+    <button type="button" class="btn" ng-click="main.test()">TEST</button>
+  </div>
+
   <!-- bower:js -->
+  <script src="../bower_components/jquery/dist/jquery.js"></script>
+  <script src="../bower_components/angular/angular.js"></script>
+  <script src="../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
   <!-- endbower -->
 
   <!-- inject:js -->
+  <script src="/src/scripts/app.js"></script>
+  <script src="/src/scripts/awesome.js"></script>
+  <script src="/src/scripts/awesome.service.js"></script>
+  <script src="/src/scripts/dictionary.js"></script>
   <!-- endinject -->
 </body>
 </html>
