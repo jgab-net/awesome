@@ -6,20 +6,11 @@ angular
 
     return {
       restrict: 'E',
-      require:'netAwesome',
+      require:'^netAwesome',
       replace: true,
       templateUrl: 'views/awesome.item.html',
-      controllerAs: 'item',
+      controllerAs: 'awesomeItem',
       bindToController: true,
-      transclude: true,
-      scope: {
-
-      },
-      controller: function () {
-
-      },
-      link: function (scope, element, attrs, controller) {
-
-      }
+      transclude: true
     };
   });

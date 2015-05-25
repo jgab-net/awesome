@@ -22,9 +22,9 @@
       list="item in main.list"
       placeholder="placeholder"
       childrens="items">
-
-      <net-awesome-item></net-awesome-item>
-
+      <net-awesome-item>
+        {{ item.label }}
+      </net-awesome-item>
     </net-awesome>
 
     <button type="button" class="btn" ng-click="main.test()">TEST</button>
@@ -39,6 +39,7 @@
   <!-- inject:js -->
   <script src="/src/scripts/app.js"></script>
   <script src="/src/scripts/awesome.js"></script>
+  <script src="/src/scripts/awesome.item.js"></script>  
   <script src="/src/scripts/awesome.service.js"></script>
   <script src="/src/scripts/dictionary.js"></script>
   <!-- endinject -->

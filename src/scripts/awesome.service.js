@@ -2,7 +2,7 @@
 
 angular
   .module('awesome')
-  .service('AwesomeService', function () {
+  .service('AwesomeService', function ($compile) {
 
     this.flatTree = function (items) {
 
@@ -27,16 +27,19 @@ angular
 
     this.cache = {
       stored: {},
+      updateIndex: function (key, i){
+        this.stored[key].scope.$index = i;
+      },
       store: function (key, clone, scope) {
         this.stored[key] = {
-          clone: angular.element('<li/>', {class: 'list-group-item'}).append(clone),
+          clone: clone,
           scope: scope,
           clear: false
         };
         return this.stored[key].clone;
       },
       exists: function (key) {
-        if (this.stored[key]) {                    
+        if (this.stored[key]) {
           this.stored[key].clear = false;
           return true;
         }

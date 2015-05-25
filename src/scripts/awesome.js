@@ -2,7 +2,7 @@
 
 angular
   .module('awesome', [])
-  .directive('netAwesome', function ($parse, AwesomeService) {
+  .directive('netAwesome', function ($parse, $timeout, AwesomeService) {
     return {
       restrict: 'E',
       require: 'ngModel',
@@ -15,11 +15,15 @@ angular
         placeholder: '@?',
         base: '@list',
         filter: '@',
-        childrens: '@'
+        childrens: '@',
+        cacheKey:'@'
       },
       controller: function ($scope) {
         this.filter = this.filter || 'label';
         this.placeholder = this.placeholder || 'search...';
+        this.select = 0;
+        this.cacheKey = this.cacheKey || '_id';
+        this.show = false;
 
         var expression = this.base.match( /^\s*(\w+)\s+in\s+([\w.]+)\s*$/i );
         if (!expression) {
@@ -27,7 +31,10 @@ angular
         }
 
         this.item = expression[1];
-        this.list = [AwesomeService.flatTree($parse(expression[2])($scope.$parent))];
+        this.list = [{
+          name: undefined,
+          list: AwesomeService.flatTree($parse(expression[2])($scope.$parent))
+        }];
       },
       link: function (scope, element, attrs, ngModel, $transclude) {
         var $input = element.find('.aw-input');
@@ -38,13 +45,15 @@ angular
           if (!collection) return;
 
           var transclude = function (clone, childScope) {
+            /** @namespace scope.awesome */
             childScope[scope.awesome.item] = collection[i];
-            $list.append(AwesomeService.cache.store(collection[i][scope.awesome.filter], clone, childScope));
+            childScope.$index = i;
+            $list.append(AwesomeService.cache.store(collection[i][scope.awesome.cacheKey], clone, childScope));
           };
 
           for (var i=0, l=collection.length; i<l; i++) {
-            //TODO spaces in properties.
-            if (AwesomeService.cache.exists(collection[i][scope.awesome.filter])) {
+            if (AwesomeService.cache.exists(collection[i][scope.awesome.cacheKey])) {
+              AwesomeService.cache.updateIndex(collection[i][scope.awesome.cacheKey],i);
               continue;
             }
             $transclude(transclude);
@@ -53,10 +62,14 @@ angular
           AwesomeService.cache.clear();
         });
 
+        scope.$watchCollection('awesome.list', function (collection) {
+          scope.awesome.suggestions = collection[collection.length-1].list;
+        });
+
         $input.on('input', function () {
           var value = $input.html();
           scope.awesome.suggestions = AwesomeService.filter(
-            scope.awesome.list[scope.awesome.list.length-1], scope.awesome.filter, value
+            scope.awesome.list[scope.awesome.list.length-1].list, scope.awesome.filter, value
           );
           scope.$apply();
         });
@@ -65,9 +78,10 @@ angular
           if ($input.find('.aw-placeholder').length !== 0) {
             $input.html('');
             scope.awesome.suggestions = AwesomeService.filter(
-              scope.awesome.list[scope.awesome.list.length-1], scope.awesome.filter
+              scope.awesome.list[scope.awesome.list.length-1].list, scope.awesome.filter
             );
           }
+          scope.awesome.show = true;
           scope.$apply();
         });
 
@@ -75,9 +89,34 @@ angular
           var keyCode = event.which || event.keyCode;
 
           if ((keyCode == 13 || keyCode == 9)) {
-            scope.awesome.suggestions = scope.awesome.suggestions[0][scope.awesome.childrens];
-            scope.awesome.list.push(scope.awesome.suggestions);
-            $input.html('');
+            if (scope.awesome.suggestions[scope.awesome.select][scope.awesome.childrens]) {
+              scope.awesome.list.push({
+                name: scope.awesome.suggestions[scope.awesome.select][scope.awesome.filter],
+                list: scope.awesome.suggestions[scope.awesome.select][scope.awesome.childrens]
+              });
+              $input.html('');
+
+              $timeout(function () {
+                $input.focus();
+              });
+            }
+          }
+
+          if (keyCode == 40) {
+            event.preventDefault();
+            scope.awesome.select = (scope.awesome.select + 1) % scope.awesome.suggestions.length;
+          } else if (keyCode == 38){
+            event.preventDefault();
+            scope.awesome.select = (scope.awesome.select - 1) > -1 ?
+              scope.awesome.select - 1 :
+              scope.awesome.suggestions.length - 1;
+          }
+
+          if (keyCode == 8 && $input.val() === '') {
+            if (scope.awesome.list.length > 1) {
+              event.preventDefault();
+              scope.awesome.list.splice(scope.awesome.list.length - 1, 1);
+            }
           }
 
           scope.$apply();
@@ -87,6 +126,8 @@ angular
           if ($input.html() === '') {
             $input.append($placeholder);
           }
+          scope.awesome.show = false;
+          scope.$apply();
         });
       }
     };
