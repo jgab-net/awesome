@@ -9,8 +9,12 @@ angular
       require:'^netAwesome',
       replace: true,
       templateUrl: 'views/awesome.item.html',
-      controllerAs: 'awesomeItem',
-      bindToController: true,
-      transclude: true
+      transclude: true,
+      link: function (scope, element, attrs, controller) {
+        /*$transclude(scope, function (clone){
+          element.append(clone);
+        });*/
+
+      }
     };
   });

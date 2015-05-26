@@ -23,7 +23,7 @@
       placeholder="placeholder"
       childrens="items">
       <net-awesome-item>
-        {{ item.label }}
+        {{ item.label }} {{ $index }}
       </net-awesome-item>
     </net-awesome>
 
@@ -39,7 +39,7 @@
   <!-- inject:js -->
   <script src="/src/scripts/app.js"></script>
   <script src="/src/scripts/awesome.js"></script>
-  <script src="/src/scripts/awesome.item.js"></script>  
+  <script src="/src/scripts/awesome.item.js"></script>
   <script src="/src/scripts/awesome.service.js"></script>
   <script src="/src/scripts/dictionary.js"></script>
   <!-- endinject -->

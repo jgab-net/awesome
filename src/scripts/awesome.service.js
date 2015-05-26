@@ -27,34 +27,35 @@ angular
 
     this.cache = {
       stored: {},
-      updateIndex: function (key, i){
-        this.stored[key].scope.$index = i;
-      },
       store: function (key, clone, scope) {
+        if (this.stored[key]){
+          this.clear(key);
+        }
         this.stored[key] = {
           clone: clone,
-          scope: scope,
-          clear: false
+          scope: scope
         };
+        this.stored[key].clear = false;
         return this.stored[key].clone;
       },
-      exists: function (key) {
-        if (this.stored[key]) {
-          this.stored[key].clear = false;
-          return true;
-        }
-        return false;
+      getScope: function (key) {
+        return this.store[key]? this.store[key].clone: undefined;
       },
-      clear: function () {
+      clear: function (key) {
+        if (this.stored) {
+          this.stored[key].clone.remove();
+          this.stored[key].scope.$destroy();
+          delete this.stored[key];
+        }
+      },
+      clearAll: function () {
         if (this.stored) {
           for (var key in this.stored){
             if (this.stored[key].clear) {
-              this.stored[key].clone.remove();
-              this.stored[key].scope.$destroy();
-              delete this.stored[key];
+              this.clear(key);
             } else {
               this.stored[key].clear = true;
-            }
+           }
           }
         }
       }

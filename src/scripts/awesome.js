@@ -1,11 +1,13 @@
 'use strict';
 
+/** @namespace scope.awesome */
+
 angular
   .module('awesome', [])
   .directive('netAwesome', function ($parse, $timeout, AwesomeService) {
     return {
       restrict: 'E',
-      require: 'ngModel',
+      require: '^ngModel',
       replace: true, //DEPECRATED
       templateUrl: 'views/awesome.html',
       controllerAs: 'awesome',
@@ -44,26 +46,23 @@ angular
         scope.$watchCollection('awesome.suggestions', function (collection) {
           if (!collection) return;
 
-          var transclude = function (clone, childScope) {
-            /** @namespace scope.awesome */
-            childScope[scope.awesome.item] = collection[i];
-            childScope.$index = i;
-            $list.append(AwesomeService.cache.store(collection[i][scope.awesome.cacheKey], clone, childScope));
+          var transclude = function (clone) {
+            $list.append(AwesomeService.cache.store(collection[i][scope.awesome.cacheKey], clone, isolateScope));
           };
 
           for (var i=0, l=collection.length; i<l; i++) {
-            if (AwesomeService.cache.exists(collection[i][scope.awesome.cacheKey])) {
-              AwesomeService.cache.updateIndex(collection[i][scope.awesome.cacheKey],i);
-              continue;
-            }
-            $transclude(transclude);
+            var isolateScope = scope.$new(true);
+            isolateScope[scope.awesome.item] = collection[i];
+            isolateScope.$index = i;
+            $transclude(isolateScope, transclude);
           }
 
-          AwesomeService.cache.clear();
+          AwesomeService.cache.clearAll();
         });
 
         scope.$watchCollection('awesome.list', function (collection) {
           scope.awesome.suggestions = collection[collection.length-1].list;
+          scope.awesome.select = 0;
         });
 
         $input.on('input', function () {
@@ -71,6 +70,7 @@ angular
           scope.awesome.suggestions = AwesomeService.filter(
             scope.awesome.list[scope.awesome.list.length-1].list, scope.awesome.filter, value
           );
+          scope.awesome.select = 0;
           scope.$apply();
         });
 
@@ -89,7 +89,8 @@ angular
           var keyCode = event.which || event.keyCode;
 
           if ((keyCode == 13 || keyCode == 9)) {
-            if (scope.awesome.suggestions[scope.awesome.select][scope.awesome.childrens]) {
+            if (scope.awesome.suggestions[scope.awesome.select] &&
+                scope.awesome.suggestions[scope.awesome.select][scope.awesome.childrens]) {
               scope.awesome.list.push({
                 name: scope.awesome.suggestions[scope.awesome.select][scope.awesome.filter],
                 list: scope.awesome.suggestions[scope.awesome.select][scope.awesome.childrens]
@@ -112,7 +113,7 @@ angular
               scope.awesome.suggestions.length - 1;
           }
 
-          if (keyCode == 8 && $input.val() === '') {
+          if (keyCode == 8 && $input.html() === '') {
             if (scope.awesome.list.length > 1) {
               event.preventDefault();
               scope.awesome.list.splice(scope.awesome.list.length - 1, 1);

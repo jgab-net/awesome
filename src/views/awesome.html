@@ -1,6 +1,8 @@
 <div class="awesome form-group">
   <div ng-class="{'input-group': awesome.list.length > 1}">
-    <span class="input-group-addon" ng-repeat="step in awesome.list" ng-if="$index > 0"> {{ step.name }}</span>
+    <span class="input-group-addon" ng-repeat="step in awesome.list" ng-if="$index > 0">
+      {{ step.name }} <i class="glyphicon glyphicon-remove aw-cancel-item" ng-click="cancel($list)"></i>
+    </span>
     <div class="aw-input form-control" contenteditable>
       <div class="aw-placeholder">{{ awesome.placeholder }}</div>
     </div>
