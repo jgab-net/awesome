@@ -2,7 +2,7 @@
 
 angular
   .module('awesome')
-  .service('AwesomeService', function ($compile) {
+  .service('AwesomeService', function () {
 
     this.flatTree = function (items) {
 
@@ -37,9 +37,6 @@ angular
         };
         this.stored[key].clear = false;
         return this.stored[key].clone;
-      },
-      getScope: function (key) {
-        return this.store[key]? this.store[key].clone: undefined;
       },
       clear: function (key) {
         if (this.stored) {

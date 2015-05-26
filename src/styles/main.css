@@ -4852,3 +4852,6 @@ button.close {
 
 .awesome .aw-input .aw-placeholder {
   color: #777777; }
+.awesome .aw-list {
+  position: absolute;
+  overflow: auto; }

@@ -18,7 +18,8 @@ angular
         base: '@list',
         filter: '@',
         childrens: '@',
-        cacheKey:'@'
+        cacheKey:'@',
+        limit:'='
       },
       controller: function ($scope) {
         this.filter = this.filter || 'label';
@@ -106,11 +107,26 @@ angular
           if (keyCode == 40) {
             event.preventDefault();
             scope.awesome.select = (scope.awesome.select + 1) % scope.awesome.suggestions.length;
+
+            if (scope.awesome.select >= scope.awesome.limit/2) {
+              $list[0].scrollTop = $list[0].scrollTop + angular.element('.aw-item.active').height() + 21;
+            } else if (scope.awesome.select === 0){
+              $list[0].scrollTop = 0;
+            }
+
           } else if (keyCode == 38){
             event.preventDefault();
             scope.awesome.select = (scope.awesome.select - 1) > -1 ?
               scope.awesome.select - 1 :
               scope.awesome.suggestions.length - 1;
+
+            if (scope.awesome.select === scope.awesome.suggestions.length -1) {
+              $list[0].scrollTop = scope.awesome.select * 41;
+            } else if (scope.awesome.select < (scope.awesome.suggestions.length-1)-scope.awesome.limit/2) {
+              $list[0].scrollTop = $list[0].scrollTop - angular.element('.aw-item.active').height() - 21;
+            }
+            console.log(scope.awesome.select);
+            console.log((scope.awesome.suggestions.length-1)-scope.awesome.limit/2);
           }
 
           if (keyCode == 8 && $input.html() === '') {
@@ -129,6 +145,19 @@ angular
           }
           scope.awesome.show = false;
           scope.$apply();
+        });
+
+        scope.$watch('hide', function () {
+          if(!scope.hide){
+            $timeout(function (){
+              //TODO sacar el 41.
+              $list.css({
+                left: element.css('left'),
+                width: element.css('width'),
+                height: (41*scope.awesome.limit-9)+'px'
+              });
+            });
+          }
         });
       }
     };
