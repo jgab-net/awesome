@@ -11,9 +11,17 @@ angular
       templateUrl: 'views/awesome.item.html',
       transclude: true,
       link: function (scope, element, attrs, controller) {
-        /*$transclude(scope, function (clone){
-          element.append(clone);
-        });*/
+
+        element.on('mouseenter', function () {
+          controller.select = scope.$index;
+          scope.$apply();
+        });
+
+        element.on('click', function (event) {
+          if (controller.active()) {
+            scope.$apply();
+          }
+        });
 
       }
     };

@@ -38,6 +38,19 @@ angular
           name: undefined,
           list: AwesomeService.flatTree($parse(expression[2])($scope.$parent))
         }];
+
+        this.active = function (event) {
+          if (this.suggestions[this.select] &&
+              this.suggestions[this.select][this.childrens]) {
+            if(event) event.preventDefault();
+            this.list.push({
+              name: this.suggestions[this.select][this.filter],
+              list: this.suggestions[this.select][this.childrens]
+            });
+            return true;
+          }
+          return false;
+        };
       },
       link: function (scope, element, attrs, ngModel, $transclude) {
         var $input = element.find('.aw-input');
@@ -90,14 +103,8 @@ angular
           var keyCode = event.which || event.keyCode;
 
           if ((keyCode == 13 || keyCode == 9)) {
-            if (scope.awesome.suggestions[scope.awesome.select] &&
-                scope.awesome.suggestions[scope.awesome.select][scope.awesome.childrens]) {
-              scope.awesome.list.push({
-                name: scope.awesome.suggestions[scope.awesome.select][scope.awesome.filter],
-                list: scope.awesome.suggestions[scope.awesome.select][scope.awesome.childrens]
-              });
+            if (scope.awesome.active(event)) {
               $input.html('');
-
               $timeout(function () {
                 $input.focus();
               });
@@ -121,12 +128,11 @@ angular
               scope.awesome.suggestions.length - 1;
 
             if (scope.awesome.select === scope.awesome.suggestions.length -1) {
+              //TODO sacar el 41.
               $list[0].scrollTop = scope.awesome.select * 41;
             } else if (scope.awesome.select < (scope.awesome.suggestions.length-1)-scope.awesome.limit/2) {
               $list[0].scrollTop = $list[0].scrollTop - angular.element('.aw-item.active').height() - 21;
             }
-            console.log(scope.awesome.select);
-            console.log((scope.awesome.suggestions.length-1)-scope.awesome.limit/2);
           }
 
           if (keyCode == 8 && $input.html() === '') {
@@ -147,8 +153,8 @@ angular
           scope.$apply();
         });
 
-        scope.$watch('hide', function () {
-          if(!scope.hide){
+        scope.$watch('awesome.show', function () {
+          if(scope.awesome.show){
             $timeout(function (){
               //TODO sacar el 41.
               $list.css({

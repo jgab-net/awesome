@@ -4855,3 +4855,6 @@ button.close {
 .awesome .aw-list {
   position: absolute;
   overflow: auto; }
+  .awesome .aw-list .aw-item {
+    cursor: pointer;
+    z-index: 100; }

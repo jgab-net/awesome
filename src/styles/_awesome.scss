@@ -8,5 +8,9 @@
   .aw-list {
     position: absolute;
     overflow: auto;
+    .aw-item {
+      cursor: pointer;
+      z-index: 100;
+    }
   }
 }
