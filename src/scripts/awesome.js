@@ -3,7 +3,7 @@
 /** @namespace scope.awesome */
 
 angular
-  .module('awesome', [])
+  .module('netComponents', [])
   .directive('netAwesome', function ($parse, $timeout, AwesomeService) {
     return {
       restrict: 'E',
@@ -167,6 +167,13 @@ angular
 
         scope.$watchCollection('awesome.list', function (collection) {
           scope.awesome.suggestions = collection[collection.length-1].list;
+
+          if (collection.length > 1 && collection[collection.length-1].item) {
+            ngModel.$setViewValue(collection[collection.length-1].item);
+          } else{
+            ngModel.$setViewValue(undefined);
+          }
+
           scope.awesome.select = 0;
         });
 
@@ -192,12 +199,10 @@ angular
 
         $list.on('mouseenter', function () {
           scope.awesome.hover = true;
-          console.log(scope.awesome.hover);
         });
 
         $list.on('mouseleave', function () {
           scope.awesome.hover = false;
-          console.log(scope.awesome.hover);
         });
 
         $input.on('keydown', function (event) {

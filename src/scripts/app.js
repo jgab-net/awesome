@@ -1,10 +1,14 @@
 'use strict';
 
 angular
-  .module('demo', ['awesome'])
+  .module('demo', ['netComponents'])
   .controller('MainController', function ($scope, $timeout, Dictionary) {
 
     this.list = Dictionary.query();
+
+    $scope.$watch('main.item', function () {
+      console.log($scope.main.item);
+    });
 
     this.getItem = function (item, father) {
 

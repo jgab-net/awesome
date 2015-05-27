@@ -1,7 +1,7 @@
 'use strict';
 
 angular
-  .module('awesome')
+  .module('netComponents')
   .directive('netAwesomeItem', function () {
 
     return {

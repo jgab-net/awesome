@@ -1,7 +1,7 @@
 'use strict';
 
 angular
-  .module('awesome')
+  .module('netComponents')
   .service('AwesomeService', function () {
 
     this.flatTree = function (items) {
