@@ -18,19 +18,19 @@
   <div class="container">
 
     <net-awesome
+      alias="awesome"
       ng-model="main.item"
       list="item in main.list"
       placeholder="placeholder"
       childrens="items"
+      get-item="main.getItem(name, father)"
       limit="10">
 
       <net-awesome-item>
-        {{ item.label }} {{ $index }}
+        {{ item.label }}
       </net-awesome-item>
 
     </net-awesome>
-
-    <button type="button" class="btn" ng-click="main.test()">TEST</button>
   </div>
 
   <!-- bower:js -->

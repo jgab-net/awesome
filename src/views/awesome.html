@@ -1,7 +1,11 @@
 <div class="awesome form-group">
   <div ng-class="{'input-group': awesome.list.length > 1}">
-    <span class="input-group-addon" ng-repeat="step in awesome.list" ng-if="$index > 0">
-      {{ step.name }} <i class="glyphicon glyphicon-remove aw-cancel-item" ng-click="cancel($list)"></i>
+    <span
+      class="input-group-addon"
+      ng-repeat="step in awesome.list"
+      ng-class="{'aw-item-add': step.add}"
+      ng-if="$index > 0">
+      {{ step.name }} <i class="glyphicon glyphicon-remove aw-cancel-item" ng-click="awesome.cancelFilter($index)"></i>
     </span>
     <div class="aw-input form-control" contenteditable>
       <div class="aw-placeholder">{{ awesome.placeholder }}</div>
@@ -9,4 +13,21 @@
   </div>
   <ul class="aw-list list-group" ng-show="awesome.show">
   </ul>
+  <div class="modal fade" data-add="false" id="preAdd" tabindex="-1" role="dialog" aria-labelledby="add" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title"> Agregar item</h4>
+        </div>
+        <div class="modal-body">
+          Desea agregar <b>{{ awesome.list[awesome.list.length-1].name }}</b> a <b>{{ awesome.father.label }} </b>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="awesome.cancelAdd()">Cancelar</button>
+          <button type="button" class="btn btn-primary" ng-click="awesome.requestItem()">Agregar</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

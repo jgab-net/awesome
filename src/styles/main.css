@@ -1212,10 +1212,10 @@ a.bg-success:hover {
 a.bg-info:hover {
   background-color: #afd9ee; }
 
-.bg-warning {
+.bg-warning, .awesome .aw-item-add {
   background-color: #fcf8e3; }
 
-a.bg-warning:hover {
+a.bg-warning:hover, .awesome a.aw-item-add:hover {
   background-color: #f7ecb5; }
 
 .bg-danger {
@@ -4854,7 +4854,8 @@ button.close {
   color: #777777; }
 .awesome .aw-list {
   position: absolute;
-  overflow: auto; }
+  overflow: auto;
+  z-index: 80; }
   .awesome .aw-list .aw-item {
     cursor: pointer;
     z-index: 100; }
