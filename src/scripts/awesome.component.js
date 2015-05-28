@@ -141,6 +141,8 @@ angular
         var $list = element.find('.aw-list');
         var $modal = element.find('#preAdd');
 
+        $modal.appendTo(angular.element('body'));
+
         scope.awesome.cancelFilter = function (index) {
           scope.awesome.list.splice(index, this.list.length-index);
           $timeout(function () {
