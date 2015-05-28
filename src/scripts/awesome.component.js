@@ -9,7 +9,7 @@ angular
       restrict: 'E',
       require: '^ngModel',
       replace: true, //DEPECRATED
-      templateUrl: 'views/awesome.html',
+      templateUrl: 'views/awesome.component.html',
       controllerAs: 'awesome',
       bindToController: true,
       transclude: true,
