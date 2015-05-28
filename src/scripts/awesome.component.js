@@ -288,13 +288,11 @@ angular
 
         scope.$watch('awesome.show', function () {
           if(scope.awesome.show){
-            $timeout(function (){
               //TODO sacar el 41.
-              $list.css({
-                left: element.css('left'),
-                width: element.css('width'),
-                height: (41*scope.awesome.limit-9)+'px'
-              });
+            $list.css({
+              left: element.css('left'),
+              width: element.css('width'),
+              height: (41*scope.awesome.limit-9)+'px'
             });
           }
         });
