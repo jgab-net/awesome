@@ -68,7 +68,7 @@ gulp.task('mv', function () {
 
 gulp.task('build', ['mv'], function () {
 	return eventStream.merge(
-			gulp.src('./src/scripts/awesome.js'),
+			gulp.src('./src/scripts/awesome.*.js'),
 			gulp.src('./src/views/**/*.html')
 				.pipe(templateCache({
 					module: 'netAwesome',
