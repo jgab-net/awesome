@@ -3,7 +3,7 @@
 /** @namespace scope.awesome */
 
 angular
-  .module('netComponents', [])
+  .module('netAwesome', [])
   .directive('netAwesome', function ($parse, $timeout, AwesomeService) {
     return {
       restrict: 'E',

@@ -71,7 +71,7 @@ gulp.task('build', ['mv'], function () {
 			gulp.src('./src/scripts/awesome.js'),
 			gulp.src('./src/views/**/*.html')
 				.pipe(templateCache({
-					module: 'awesome',
+					module: 'netAwesome',
 					root: 'views'
 				}))
 		)

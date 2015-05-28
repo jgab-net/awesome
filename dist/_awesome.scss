@@ -1,0 +1,21 @@
+.awesome {
+  .aw-input {
+    .aw-placeholder{
+      color: #777777;
+    }
+  }
+
+  .aw-item-add {
+    @extend .bg-warning;
+  }
+
+  .aw-list {
+    position: absolute;
+    overflow: auto;
+    z-index: 80;
+    .aw-item {
+      cursor: pointer;
+      z-index: 100;
+    }
+  }
+}

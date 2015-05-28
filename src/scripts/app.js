@@ -1,7 +1,7 @@
 'use strict';
 
 angular
-  .module('demo', ['netComponents'])
+  .module('demo', ['netAwesome'])
   .controller('MainController', function ($scope, $timeout, Dictionary) {
 
     this.list = Dictionary.query();
