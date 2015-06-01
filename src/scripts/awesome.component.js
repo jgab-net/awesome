@@ -129,6 +129,10 @@ angular
 
             $element.find('#preAdd').data('add', true).modal('hide');
 
+          }.bind(this),
+          clear: function (){
+            this.list.splice(1, this.list.length-1);
+            this.show = false;
           }.bind(this)
         };
       },

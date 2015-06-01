@@ -36,4 +36,8 @@ angular
 
     };
 
+    this.clear = function () {
+      $scope.awesome.clear();
+    };
+
   });
