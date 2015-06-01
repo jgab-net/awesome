@@ -319,6 +319,7 @@ angular
           scope.awesome.addingItem = false;
           scope.awesome.show = false;
 
+          scope.$apply();
           $timeout(function () {
             $input.focus();
           });
