@@ -155,6 +155,7 @@ angular
                 }
               }
             }
+            this.show = false;
             $document.find('#preAdd').modal('hide');
 
           }.bind(this),
