@@ -316,6 +316,8 @@ angular
             scope.awesome.father = undefined;
           }
           scope.awesome.addingItem = false;
+          scope.awesome.show = false;
+
           $timeout(function () {
             $input.focus();
           });
