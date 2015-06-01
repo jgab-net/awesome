@@ -181,6 +181,7 @@ angular
 
         $input.on('input', function () {
           var value = $input.html();
+          scope.awesome.show = true;
           scope.awesome.suggestions = AwesomeService.filter(
             scope.awesome.list[scope.awesome.list.length-1].list, scope.awesome.filter, value
           );
