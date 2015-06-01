@@ -109,16 +109,13 @@ angular
             if (!father) {
               father =
                 this.list[0].list.filter(function (item) {
-                  return item[this.cacheKey] = child.parent;
+                  return item[this.cacheKey] == child.parent;
                 }.bind(this))[0] ||
                 this.list.find(function (list) {
                   return !!list.item;
                 }).item;
             }
 
-            console.log(this.list.some(function (list) {
-              return !!list.item;
-            }));
           }
           return father;
         };
@@ -137,7 +134,7 @@ angular
             this.father = undefined;
           } else {
             this.list[0].list.filter(function (item) {
-              return item[this.cacheKey] = child.parent;
+              return item[this.cacheKey] == child.parent;
             }.bind(this))[0][this.childrens].push(item);
           }
         };
