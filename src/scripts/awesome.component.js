@@ -319,7 +319,6 @@ angular
           scope.awesome.addingItem = false;
           scope.awesome.show = false;
 
-          scope.$apply();
         });
 
         $modal.on('show.bs.modal', function () {
