@@ -320,9 +320,6 @@ angular
           scope.awesome.show = false;
 
           scope.$apply();
-          $timeout(function () {
-            $input.focus();
-          });
         });
 
         $modal.on('show.bs.modal', function () {
