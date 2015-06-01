@@ -1,8 +1,9 @@
 .awesome {
   .aw-input {
-    overflow: hidden;
     .aw-placeholder{
       color: #777777;
+      overflow: hidden;
+      height: 100%;
     }
   }
 
