@@ -151,7 +151,12 @@ angular
         };
 
         scope.$watchCollection('awesome.suggestions', function (collection) {
-          if (!collection) return;
+          if (!collection || collection.length === 0) {
+            $list.css({
+              display: 'none'
+            });
+            return;
+          }
 
           var transclude = function (clone) {
             $list.append(AwesomeService.cache.store(collection[i][scope.awesome.cacheKey], clone, isolateScope));
