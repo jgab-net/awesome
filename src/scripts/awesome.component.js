@@ -260,7 +260,7 @@ angular
           }
 
           if (keyCode == 27) {
-            scope.awesome.show = true;
+            scope.awesome.show = false;
           }
 
           scope.$apply();
