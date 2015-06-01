@@ -307,10 +307,8 @@ angular
           if ($input.html() === '') {
             $input.append($placeholder);
           }
-          if (!scope.awesome.hover) {
-            scope.awesome.show = false;
-            scope.$apply();
-          }
+          scope.awesome.show = scope.awesome.hover;
+          scope.$apply();
         });
 
         $modal.on('hide.bs.modal', function () {
