@@ -259,6 +259,10 @@ angular
             }
           }
 
+          if (keyCode == 27) {
+            scope.awesome.show = true;
+          }
+
           scope.$apply();
         });
 
