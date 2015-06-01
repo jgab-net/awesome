@@ -4,7 +4,7 @@
 
 angular
   .module('netAwesome', [])
-  .directive('netAwesome', function ($parse, $timeout, AwesomeService) {
+  .directive('netAwesome', function ($parse, $timeout, $document, AwesomeService) {
     return {
       restrict: 'E',
       require: '^ngModel',
@@ -30,6 +30,7 @@ angular
         this.cacheKey = this.cacheKey || '_id';
         this.show = false;
         this.father = undefined;
+        this.addingItem = false;
 
         var expression = this.base.match( /^\s*(\w+)\s+in\s+([\w.]+)\s*$/i );
         if (!expression) {
@@ -112,12 +113,12 @@ angular
 
         this.extern = {
           addItem: function (item) {
+            this.addingItem = true;
             this.addItem(item);
             if (this.list.length >= 2) {
               for (var i = this.list.length - 1; i >= 0; i--) {
-                if (this.list[i].item) {
-                  console.log(this.list[i].item);
-                  this.list.splice(i, this.list.length-i, {
+                if (this.list[i].item && this.list[i].item[this.childrens].length > 0) {
+                  this.list.splice(i+1, this.list.length-i, {
                     name: item.label,
                     item: item,
                     list: []
@@ -126,8 +127,7 @@ angular
                 }
               }
             }
-
-            $element.find('#preAdd').data('add', true).modal('hide');
+            $document.find('#preAdd').modal('hide');
 
           }.bind(this),
           clear: function (){
@@ -155,12 +155,7 @@ angular
         };
 
         scope.$watchCollection('awesome.suggestions', function (collection) {
-          if (!collection || collection.length === 0) {
-            $list.css({
-              display: 'none'
-            });
-            return;
-          }
+          if (!collection) return;
 
           var transclude = function (clone) {
             $list.append(AwesomeService.cache.store(collection[i][scope.awesome.cacheKey], clone, isolateScope));
@@ -224,9 +219,9 @@ angular
             if (scope.awesome.active()) {
               event.preventDefault();
               $input.html('');
-              /*$timeout(function () {
+              $timeout(function () {
                 $input.focus();
-              });*/
+              });
             } else if($input.html() !== '' && angular.isUndefined(attr.getItem) === false) {
               if (scope.awesome.preAddItem($input.html())) {
                 event.preventDefault();
@@ -288,12 +283,11 @@ angular
         });
 
         $modal.on('hide.bs.modal', function () {
-
-          if ($modal.data('add') === false) {
-            scope.awesome.list.splice(scope.awesome.list.length -1, 1);
+          if (!scope.awesome.addingItem) {
+            scope.awesome.list.splice(scope.awesome.list.length - 1, 1);
             scope.awesome.father = undefined;
           }
-          $modal.data('add', false);
+          scope.awesome.addingItem = false;
           $timeout(function () {
             $input.focus();
           });
@@ -309,12 +303,7 @@ angular
             $list.css({
               left: element.css('left'),
               width: element.css('width'),
-              height: (41*scope.awesome.limit-9)+'px',
-              display: 'block'
-            });
-          } else {
-            $list.css({
-              display: 'none'
+              height: (41*scope.awesome.limit-9)+'px'
             });
           }
         });

@@ -7,7 +7,6 @@ angular
     this.list = Dictionary.query();
 
     $scope.$watch('main.item', function () {
-      console.log($scope.main.item);
     });
 
     this.getItem = function (item, father) {
