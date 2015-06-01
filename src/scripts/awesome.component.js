@@ -267,6 +267,7 @@ angular
 
           if (keyCode == 27) {
             scope.awesome.show = false;
+            $input.trigger('blur');
           }
 
           scope.$apply();

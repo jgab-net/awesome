@@ -4850,10 +4850,10 @@ button.close {
   .hidden-print {
     display: none !important; } }
 
-.awesome .aw-input {
-  overflow: hidden; }
-  .awesome .aw-input .aw-placeholder {
-    color: #777777; }
+.awesome .aw-input .aw-placeholder {
+  color: #777777;
+  overflow: hidden;
+  height: 100%; }
 .awesome .aw-list {
   position: absolute;
   overflow: auto;
