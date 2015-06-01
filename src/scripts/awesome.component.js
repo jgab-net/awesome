@@ -186,6 +186,8 @@ angular
         scope.$watchCollection('awesome.suggestions', function (collection) {
           if (!collection) return;
 
+          if (collection.length == 0) scope.awesome.show = false;
+
           var transclude = function (clone) {
             $list.append(AwesomeService.cache.store(collection[i][scope.awesome.cacheKey], clone, isolateScope));
           };
