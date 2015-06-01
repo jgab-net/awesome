@@ -299,7 +299,12 @@ angular
             $list.css({
               left: element.css('left'),
               width: element.css('width'),
-              height: (41*scope.awesome.limit-9)+'px'
+              height: (41*scope.awesome.limit-9)+'px',
+              display: 'block'
+            });
+          } else {
+            $list.css({
+              display: 'none'
             });
           }
         });
