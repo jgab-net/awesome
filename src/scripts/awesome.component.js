@@ -170,7 +170,6 @@ angular
           scope.$parent[scope.awesome.alias] = scope.awesome.extern || {};
 
         var $input = element.find('.aw-input');
-        var $placeholder = element.find('.aw-placeholder');
         var $list = element.find('.aw-list');
         var $modal = element.find('#preAdd');
 
@@ -215,22 +214,20 @@ angular
         });
 
         $input.on('input', function () {
-          var value = $input.html();
-          scope.awesome.show = true;
+          var value = $input.val();
           scope.awesome.suggestions = AwesomeService.filter(
             scope.awesome.list[scope.awesome.list.length-1].list, scope.awesome.filter, value
           );
+          scope.awesome.show = true;
           scope.awesome.select = 0;
           scope.$apply();
         });
 
         $input.on('focusin', function () {
-          if ($input.find('.aw-placeholder').length !== 0) {
-            $input.html('');
-            scope.awesome.suggestions = AwesomeService.filter(
-              scope.awesome.list[scope.awesome.list.length-1].list, scope.awesome.filter
-            );
-          }
+          var value = $input.val();
+          scope.awesome.suggestions = AwesomeService.filter(
+            scope.awesome.list[scope.awesome.list.length-1].list, scope.awesome.filter, value
+          );
           scope.awesome.show = true;
           scope.$apply();
         });
@@ -249,14 +246,14 @@ angular
           if ((keyCode == 13 || keyCode == 9)) {
             if (scope.awesome.active()) {
               event.preventDefault();
-              $input.html('');
+              $input.val('');
               $timeout(function () {
                 $input.focus();
               });
-            } else if($input.html() !== '' && angular.isUndefined(attr.getItem) === false) {
-              if (scope.awesome.preAddItem($input.html())) {
+            } else if($input.val() !== '' && angular.isUndefined(attr.getItem) === false) {
+              if (scope.awesome.preAddItem($input.val())) {
                 event.preventDefault();
-                $input.html('');
+                $input.val('');
                 $modal.modal('show');
               }
             } else if(keyCode == 13) {
@@ -288,7 +285,7 @@ angular
             }
           }
 
-          if (keyCode == 8 && $input.html() === '') {
+          if (keyCode == 8 && $input.val() === '') {
             if (scope.awesome.list.length > 1) {
               event.preventDefault();
               scope.awesome.list.splice(scope.awesome.list.length - 1, 1);
@@ -304,9 +301,6 @@ angular
         });
 
         $input.on('focusout', function () {
-          if ($input.html() === '') {
-            $input.append($placeholder);
-          }
           scope.awesome.show = scope.awesome.hover;
           scope.$apply();
         });
