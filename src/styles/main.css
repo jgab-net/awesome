@@ -4862,4 +4862,5 @@ button.close {
   z-index: 80; }
   .awesome .aw-list .aw-item {
     cursor: pointer;
-    z-index: 100; }
+    z-index: 100;
+    height: 41px; }

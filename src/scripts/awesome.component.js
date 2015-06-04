@@ -191,8 +191,8 @@ angular
           var transclude = function (clone) {
             $list.append(AwesomeService.cache.store(collection[i][scope.awesome.cacheKey], clone, isolateScope));
             if (i <= scope.awesome.limit) {
-              //TODO jodido 41... height de item no funciona bien.
-              $list.height((41*(i+1))-i);
+              var $item = angular.element($list.children()[i]);
+              $list.height(($item.outerHeight()*(i+1))-i);
             }
           };
 
@@ -248,7 +248,7 @@ angular
             scope.awesome.select = (scope.awesome.select + 1) % scope.awesome.suggestions.length;
 
             if (scope.awesome.select >= scope.awesome.limit/2) {
-              $list[0].scrollTop = $list[0].scrollTop + angular.element('.aw-item.active').height() + 21;
+              $list[0].scrollTop = $list[0].scrollTop + angular.element('.aw-item.active').outerHeight() - 1;
             } else if (scope.awesome.select === 0){
               $list[0].scrollTop = 0;
             }
@@ -260,10 +260,9 @@ angular
               scope.awesome.suggestions.length - 1;
 
             if (scope.awesome.select === scope.awesome.suggestions.length -1) {
-              //TODO sacar el 41.
-              $list[0].scrollTop = scope.awesome.select * 41;
+              $list[0].scrollTop = scope.awesome.select * angular.element('.aw-item.active').outerHeight();
             } else if (scope.awesome.select < (scope.awesome.suggestions.length-1)-scope.awesome.limit/2) {
-              $list[0].scrollTop = $list[0].scrollTop - angular.element('.aw-item.active').height() - 21;
+              $list[0].scrollTop = $list[0].scrollTop - angular.element('.aw-item.active').outerHeight() + 1;
             }
           }
 
