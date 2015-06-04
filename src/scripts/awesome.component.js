@@ -44,7 +44,8 @@ angular
         cacheKey:'@',
         getItem:'&?',
         limit:'=',
-        alias:'@'
+        alias:'@',
+        itemHeight: '@?'
       },
       controller: function ($scope) {
         this.filter = this.filter || 'label';
@@ -190,8 +191,10 @@ angular
 
           var transclude = function (clone) {
             $list.append(AwesomeService.cache.store(collection[i][scope.awesome.cacheKey], clone, isolateScope));
-            if (i <= scope.awesome.limit) {
-              var $item = angular.element($list.children()[i]);
+
+            var $item = angular.element($list.children()[i]);
+            if (angular.isUndefined(attr.itemHeight) === false) $item.height(scope.awesome.itemHeight);
+            if (i < scope.awesome.limit) {
               $list.height(($item.outerHeight()*(i+1))-i);
             }
           };
@@ -298,7 +301,6 @@ angular
 
         $input.on('focusin', function () {
           var value = $input.val();
-          console.log('aca');
           scope.awesome.suggestions = AwesomeService.filter(
               scope.awesome.list[scope.awesome.list.length-1].list, scope.awesome.filter, value
           );

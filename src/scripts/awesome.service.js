@@ -13,7 +13,7 @@ angular
           if (items[i].items) results.push.apply(results, flat(items[i].items));
         }
         return results;
-      })(items);
+      })(items).sort();
 
     };
 

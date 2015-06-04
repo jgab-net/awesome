@@ -24,11 +24,20 @@
       list="item in main.list"
       placeholder="placeholder"
       childrens="items"
+      item-height="21px"
       get-item="main.getItem(name, father)"
       limit="10">
 
       <net-awesome-item>
-        {{ item.label }}
+        <span class="name">
+          <i ng-show="item.root" class="fa fa-cubes"></i>
+          <i ng-show="item.middle" class="fa fa-cube"></i>
+          {{ item.label }} <span class="text-muted" ng-if="item.parent.label">:{{item.parent.label}} </span>
+        </span>
+        <span class="detail">
+          <span ng-if="!item.leaf">{{item.details}}</span>
+          <span ng-if="item.leaf">{{item.parent.parent.label}} > {{item.parent.label}} </span>
+        </span>
       </net-awesome-item>
 
     </net-awesome>
