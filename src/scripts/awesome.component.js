@@ -196,10 +196,14 @@ angular
           if (!collection) return;
 
           var transclude = function (clone) {
+            if (angular.isUndefined(attr.itemHeight) === false){
+
+              clone.height(scope.awesome.itemHeight);
+            }
             $list.append(AwesomeService.cache.store(collection[i][scope.awesome.cacheKey], clone, isolateScope));
 
             var $item = angular.element($list.children()[i]);
-            if (angular.isUndefined(attr.itemHeight) === false) $item.height(scope.awesome.itemHeight);
+
             if (i < scope.awesome.limit) {
               $list.height(($item.outerHeight()*(i+1))-i);
             }
