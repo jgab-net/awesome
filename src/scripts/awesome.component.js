@@ -226,11 +226,11 @@ angular
         });
 
         $list.on('mouseenter', function () {
-          scope.awesome.hover = true;
+          scope.hover = true;
         });
 
         $list.on('mouseleave', function () {
-          scope.awesome.hover = false;
+          scope.hover = false;
         });
 
         $input.on('keydown', function (event) {
@@ -293,7 +293,7 @@ angular
         });
 
         $input.on('focusout', function () {
-          scope.show = false;
+          scope.show = scope.hover || false;
           scope.$apply();
         });
 
