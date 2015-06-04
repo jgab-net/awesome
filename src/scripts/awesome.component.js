@@ -184,8 +184,9 @@ angular
 
           var transclude = function (clone) {
             $list.append(AwesomeService.cache.store(collection[i][scope.awesome.cacheKey], clone, isolateScope));
-            if (i === scope.awesome.limit-1) {
-              $list.height(angular.element($list.children()[0]).outerHeight()*scope.awesome.limit-i);
+            if (i <= scope.awesome.limit) {
+              //TODO jodido 41... height de item no funciona bien.
+              $list.height((41*(i+1))-i);
             }
           };
 
@@ -240,17 +241,12 @@ angular
             if (scope.awesome.active()) {
               event.preventDefault();
               $input.val('');
-              $timeout(function () {
-                $input.focus();
-              });
             } else if($input.val() !== '' && angular.isUndefined(attr.getItem) === false) {
               if (scope.awesome.preAddItem($input.val())) {
                 event.preventDefault();
                 $input.val('');
                 $modal.modal('show');
               }
-            } else if(keyCode == 13) {
-              event.preventDefault();
             }
           }
 
