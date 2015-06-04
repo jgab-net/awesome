@@ -19,10 +19,10 @@ angular
 
         element.on('click', function (event) {
           if (controller.active()) {
+            controller.focus();
             scope.$apply();
           }
         });
-
       }
     };
   });

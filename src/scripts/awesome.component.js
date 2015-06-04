@@ -46,7 +46,7 @@ angular
         limit:'=',
         alias:'@'
       },
-      controller: function ($scope, $element) {
+      controller: function ($scope) {
         this.filter = this.filter || 'label';
         this.placeholder = this.placeholder || 'search...';
         this.select = 0;
@@ -170,10 +170,21 @@ angular
         var $list = element.find('.aw-list');
         var $modal = element.find('#preAdd');
 
+        scope.hide = true;
+
+        $list.css({
+          left: element.css('left'),
+          width: element.css('width')
+        });
+
         $modal.appendTo(angular.element('body'));
 
         scope.awesome.cancelFilter = function (index) {
           scope.awesome.list.splice(index, this.list.length-index);
+          scope.awesome.focus();
+        };
+
+        scope.awesome.focus = function () {
           $timeout(function () {
             $input.focus();
           });
@@ -198,11 +209,6 @@ angular
           }
 
           AwesomeService.cache.clearAll();
-
-          $list.css({
-            left: element.css('left'),
-            width: element.css('width')
-          });
         });
 
         scope.$watchCollection('awesome.list', function (collection) {
@@ -224,14 +230,6 @@ angular
           );
           scope.awesome.select = 0;
           scope.$apply();
-        });
-
-        $list.on('mouseenter', function () {
-          scope.hover = true;
-        });
-
-        $list.on('mouseleave', function () {
-          scope.hover = false;
         });
 
         $input.on('keydown', function (event) {
@@ -288,6 +286,16 @@ angular
           scope.$apply();
         });
 
+        $list.on('mouseover', function () {
+          scope.hover = $list.children().length > 0;
+          scope.$apply();
+        });
+
+        $list.on('mouseleave', function () {
+          scope.hover = false;
+          scope.$apply();
+        });
+
         $input.on('focusout', function () {
           scope.show = scope.hover || false;
           scope.$apply();
@@ -298,7 +306,7 @@ angular
           scope.awesome.suggestions = AwesomeService.filter(
               scope.awesome.list[scope.awesome.list.length-1].list, scope.awesome.filter, value
           );
-          scope.show = true;
+          scope.show = $list.children().length > 0;
           scope.$apply();
         });
 
