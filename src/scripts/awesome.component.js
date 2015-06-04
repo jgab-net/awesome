@@ -172,11 +172,6 @@ angular
 
         scope.hide = true;
 
-        $list.css({
-          left: element.css('left'),
-          width: element.css('width')
-        });
-
         $modal.appendTo(angular.element('body'));
 
         scope.awesome.cancelFilter = function (index) {
@@ -324,6 +319,15 @@ angular
 
         $modal.on('show.bs.modal', function () {
           scope.awesome.father = scope.awesome.deductFather();
+        });
+
+        scope.$watch('show', function (){
+          if (scope.show) {
+            $list.css({
+              left: element.css('left'),
+              width: element.css('width')
+            });
+          }
         });
       }
     };
