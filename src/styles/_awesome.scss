@@ -7,6 +7,12 @@
     }
   }
 
+  .aw-step {
+    .aw-cancel-item {
+      cursor: pointer;
+    }
+  }
+
   .aw-item-add {
     @extend .bg-warning;
   }

@@ -4854,6 +4854,8 @@ button.close {
   color: #777777;
   overflow: hidden;
   height: 100%; }
+.awesome .aw-step .aw-cancel-item {
+  cursor: pointer; }
 .awesome .aw-list {
   position: absolute;
   overflow: auto;

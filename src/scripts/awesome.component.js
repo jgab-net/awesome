@@ -280,6 +280,7 @@ angular
           }
 
           if (keyCode == 27) {
+            scope.show = false;
             $input.trigger('blur');
           }
 
@@ -297,16 +298,19 @@ angular
         });
 
         $input.on('focusout', function () {
-          scope.show = scope.hover || false;
+          scope.show = false;
           scope.$apply();
         });
 
         $input.on('focusin', function () {
           var value = $input.val();
+          console.log('aca');
           scope.awesome.suggestions = AwesomeService.filter(
               scope.awesome.list[scope.awesome.list.length-1].list, scope.awesome.filter, value
           );
-          scope.show = $list.children().length > 0;
+          $timeout(function (){
+            scope.show = $list.children().length > 0;
+          });
           scope.$apply();
         });
 
