@@ -45,9 +45,10 @@ angular
         getItem:'&?',
         limit:'=',
         alias:'@',
-        itemHeight: '@?'
+        itemHeight: '@?',
+        sortItems:'&?'
       },
-      controller: function ($scope) {
+      controller: function ($scope, $element, $attrs) {
         this.filter = this.filter || 'label';
         this.placeholder = this.placeholder || 'search...';
         this.select = 0;
@@ -63,7 +64,12 @@ angular
         this.item = expression[1];
         this.list = [{
           name: undefined,
-          list: AwesomeService.flatTree($parse(expression[2])($scope.$parent))
+          list: AwesomeService.flatTree(
+              $parse(expression[2])($scope.$parent),
+              angular.isUndefined($attrs.sortItems) === false? function (a,b) {
+
+            return this.sortItems({a:a, b:b});
+          }.bind(this) : undefined)
         }];
 
         this.active = function () {

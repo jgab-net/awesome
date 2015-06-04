@@ -9,6 +9,10 @@ angular
     $scope.$watch('main.item', function () {
     });
 
+    this.sortItem = function (a, b) {
+      return a.level - b.level;
+    };
+
     this.getItem = function (item, father) {
 
       $timeout(function () {

@@ -4,17 +4,17 @@ angular
   .module('netAwesome')
   .service('AwesomeService', function () {
 
-    this.flatTree = function (items) {
-
-      return (function flat (items) {
+    this.flatTree = function (items, sort) {
+      var results = (function flat (items) {
         var results = [];
         for (var i=0, l=items.length; i<l;i++) {
           results.push(items[i]);
           if (items[i].items) results.push.apply(results, flat(items[i].items));
         }
         return results;
-      })(items).sort();
-
+      })(items);
+      if (sort) results.sort(sort);
+      return results;
     };
 
     this.filter = function (list, key, value) {
