@@ -51,7 +51,6 @@ angular
         this.placeholder = this.placeholder || 'search...';
         this.select = 0;
         this.cacheKey = this.cacheKey || '_id';
-        this.show = false;
         this.father = undefined;
         this.addingItem = false;
 
@@ -155,13 +154,11 @@ angular
                 }
               }
             }
-            this.show = false;
             $document.find('#preAdd').modal('hide');
 
           }.bind(this),
           clear: function (){
             this.list.splice(1, this.list.length-1);
-            this.show = false;
           }.bind(this)
         };
       },
@@ -185,10 +182,11 @@ angular
         scope.$watchCollection('awesome.suggestions', function (collection) {
           if (!collection) return;
 
-          if (collection.length == 0) scope.awesome.show = false;
-
           var transclude = function (clone) {
             $list.append(AwesomeService.cache.store(collection[i][scope.awesome.cacheKey], clone, isolateScope));
+            if (i === scope.awesome.limit-1) {
+              $list.height(angular.element($list.children()[0]).outerHeight()*scope.awesome.limit-i);
+            }
           };
 
           for (var i=0, l=collection.length; i<l; i++) {
@@ -199,6 +197,11 @@ angular
           }
 
           AwesomeService.cache.clearAll();
+
+          $list.css({
+            left: element.css('left'),
+            width: element.css('width')
+          });
         });
 
         scope.$watchCollection('awesome.list', function (collection) {
@@ -218,17 +221,7 @@ angular
           scope.awesome.suggestions = AwesomeService.filter(
             scope.awesome.list[scope.awesome.list.length-1].list, scope.awesome.filter, value
           );
-          scope.awesome.show = true;
           scope.awesome.select = 0;
-          scope.$apply();
-        });
-
-        $input.on('focusin', function () {
-          var value = $input.val();
-          scope.awesome.suggestions = AwesomeService.filter(
-            scope.awesome.list[scope.awesome.list.length-1].list, scope.awesome.filter, value
-          );
-          scope.awesome.show = true;
           scope.$apply();
         });
 
@@ -293,7 +286,6 @@ angular
           }
 
           if (keyCode == 27) {
-            scope.awesome.show = false;
             $input.trigger('blur');
           }
 
@@ -301,7 +293,16 @@ angular
         });
 
         $input.on('focusout', function () {
-          scope.awesome.show = scope.awesome.hover;
+          scope.show = false;
+          scope.$apply();
+        });
+
+        $input.on('focusin', function () {
+          var value = $input.val();
+          scope.awesome.suggestions = AwesomeService.filter(
+              scope.awesome.list[scope.awesome.list.length-1].list, scope.awesome.filter, value
+          );
+          scope.show = true;
           scope.$apply();
         });
 
@@ -311,23 +312,10 @@ angular
             scope.awesome.father = undefined;
           }
           scope.awesome.addingItem = false;
-          scope.awesome.show = false;
-
         });
 
         $modal.on('show.bs.modal', function () {
           scope.awesome.father = scope.awesome.deductFather();
-        });
-
-        scope.$watch('awesome.show', function () {
-          if(scope.awesome.show){
-              //TODO sacar el 41.
-            $list.css({
-              left: element.css('left'),
-              width: element.css('width'),
-              height: (41*scope.awesome.limit-9)+'px'
-            });
-          }
         });
       }
     };
