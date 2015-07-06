@@ -75,6 +75,8 @@ angular
         this.active = function () {
           if (this.suggestions[this.select] &&
               this.suggestions[this.select][this.childrens]) {
+            $element.find('.aw-input').val('');
+
             this.list.push({
               name: this.suggestions[this.select][this.filter],
               item: this.suggestions[this.select],
@@ -177,8 +179,6 @@ angular
         var $list = element.find('.aw-list');
         var $modal = element.find('#preAdd');
 
-        scope.hide = true;
-
         $modal.appendTo(angular.element('body'));
 
         scope.awesome.cancelFilter = function (index) {
@@ -233,6 +233,7 @@ angular
 
         $input.on('input', function () {
           var value = $input.val();
+          scope.show = true;
           scope.awesome.suggestions = AwesomeService.filter(
             scope.awesome.list[scope.awesome.list.length-1].list, scope.awesome.filter, value
           );
