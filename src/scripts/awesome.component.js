@@ -205,7 +205,7 @@ angular
             var $item = angular.element($list.children()[i]);
 
             if (i < scope.awesome.limit) {
-              $list.height(1+($item.outerHeight()*(i+1))-i);
+              $list.height(($item.outerHeight()*(i+1))-i);
             }
           };
 
