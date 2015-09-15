@@ -5,14 +5,18 @@ angular
   .service('AwesomeService', function () {
 
     this.flatTree = function (items, sort) {
+      console.log(items)
       var results = (function flat (items) {
         var results = [];
         for (var i=0, l=items.length; i<l;i++) {
-          results.push(items[i]);
-          if (items[i].items) results.push.apply(results, flat(items[i].items));
+          if (items[i].flags.visible) {
+            results.push(items[i]);
+            if (items[i].items) results.push.apply(results, flat(items[i].items));
+          };
         }
         return results;
       })(items);
+
       if (sort) results.sort(sort);
       return results;
     };
@@ -20,7 +24,7 @@ angular
     this.filter = function (list, key, value) {
       value = value || '';
       return list.filter(function (item) {
-        return item[key].indexOf(value) === 0;
+          return item[key].indexOf(value) === 0;          
       });
 
     };
