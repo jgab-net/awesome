@@ -24,14 +24,12 @@ angular
     };
 
     this.filter = function (list, key, value) {
-      value = value || '';
+      value = value.latinise() || '';
+
       return list.filter(function (item) {
 
-        if (value.isLatin()) {
           return item[key].latinise().indexOf(value) === 0;
-        } else {
-          return item[key].indexOf(value) === 0;          
-        }
+
       });
 
     };
