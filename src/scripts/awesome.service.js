@@ -28,7 +28,7 @@ angular
 
       return list.filter(function (item) {
 
-          return item[key].latinise().indexOf(value) === 0;
+          return item[key].latinise().indexOf(value) >= 0;
 
       });
 
