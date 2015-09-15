@@ -5,14 +5,13 @@ angular
   .service('AwesomeService', function () {
 
     this.flatTree = function (items, sort) {
-      console.log(items)
       var results = (function flat (items) {
         var results = [];
         for (var i=0, l=items.length; i<l;i++) {
           if (items[i].flags.visible) {
             results.push(items[i]);
             if (items[i].items) results.push.apply(results, flat(items[i].items));
-          };
+          }
         }
         return results;
       })(items);
