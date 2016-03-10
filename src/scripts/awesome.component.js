@@ -55,12 +55,10 @@ angular
         this.cacheKey = this.cacheKey || '_id';
         this.father = undefined;
         this.addingItem = false;
-
         var expression = this.base.match( /^\s*(\w+)\s+in\s+([\w.]+)\s*$/i );
         if (!expression) {
           throw(new Error("list only supports ITEM in COLLECTION syntax."));
         }
-
         this.item = expression[1];
         this.list = [{
           name: undefined,
@@ -71,7 +69,17 @@ angular
             return this.sortItems({a:a, b:b});
           }.bind(this) : undefined)
         }];
+        this.refreshList = function (newList) {
+          this.list = [{
+          name: undefined,
+          list: AwesomeService.flatTree(
+              newList,
+              angular.isUndefined($attrs.sortItems) === false? function (a,b) {
 
+            return this.sortItems({a:a, b:b});
+          }.bind(this) : undefined)
+        }]
+        }
         this.active = function () {
           if (this.suggestions[this.select] &&
               this.suggestions[this.select][this.childrens]) {
@@ -174,7 +182,6 @@ angular
       link: function (scope, element, attr, ngModel, $transclude) {
         if (scope.awesome.alias)
           scope.$parent[scope.awesome.alias] = scope.awesome.extern || {};
-
         var $input = element.find('.aw-input');
         var $list = element.find('.aw-list');
         var $modal = element.find('#preAdd');
