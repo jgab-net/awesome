@@ -69,6 +69,7 @@ angular
             return this.sortItems({a:a, b:b});
           }.bind(this) : undefined)
         }];
+
         this.refreshList = function (newList) {
           this.list = [{
           name: undefined,
@@ -78,7 +79,7 @@ angular
 
             return this.sortItems({a:a, b:b});
           }.bind(this) : undefined)
-        }]
+          }]
         }
         this.active = function () {
           if (this.suggestions[this.select] &&
@@ -176,6 +177,9 @@ angular
           }.bind(this),
           clear: function (){
             this.list.splice(1, this.list.length-1);
+          }.bind(this),
+          refreshList: function (newList) {
+            this.refreshList(newList)
           }.bind(this)
         };
       },
