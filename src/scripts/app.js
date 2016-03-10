@@ -3,12 +3,13 @@
 angular
   .module('demo', ['netAwesome'])
   .controller('MainController', function ($scope, $timeout, Dictionary) {
-
-    this.list = Dictionary.query();
-
+    $scope.list = Dictionary.query();
     $scope.$watch('main.item', function () {
     });
-
+    
+    $scope.refreshList = function (newList) {
+      $scope.awesome.refreshList(newList);
+    }
     this.sortItem = function (a, b) {
       return a.level - b.level;
     };
