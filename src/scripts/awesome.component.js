@@ -85,21 +85,23 @@ angular
             var item1 = listBefore[1],
               item2 = listBefore[2],
               item3 = listBefore[3];
-
+              item3.list = newList
               this.list.push(item1);
               this.list.push(item2);
               this.list.push(item3);
           } else if (listBefore[2]) {
             var item1 = listBefore[1],
               item2 = listBefore[2];
-
+              item2.list = newList
               this.list.push(item1);
               this.list.push(item2);
           } else if (listBefore[1]) {
             var item1 = listBefore[1];
+              item1.list = newList
 
               this.list.push(item1);
           };
+          console.log(this.list)
         }
         this.active = function () {
           if (this.suggestions[this.select] &&
