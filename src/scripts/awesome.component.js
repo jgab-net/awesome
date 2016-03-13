@@ -71,6 +71,7 @@ angular
         }];
 
         this.refreshList = function (newList) {
+          var listBefore = this.list
           this.list = [{
           name: undefined,
           list: AwesomeService.flatTree(
@@ -80,6 +81,25 @@ angular
             return this.sortItems({a:a, b:b});
           }.bind(this) : undefined)
           }]
+          if (listBefore[3]) {
+            var item1 = listBefore[1],
+              item2 = listBefore[2],
+              item3 = listBefore[3];
+
+              this.list.push(item1);
+              this.list.push(item2);
+              this.list.push(item3);
+          } else if (listBefore[2]) {
+            var item1 = listBefore[1],
+              item2 = listBefore[2];
+
+              this.list.push(item1);
+              this.list.push(item2);
+          } else if (listBefore[1]) {
+            var item1 = listBefore[1];
+
+              this.list.push(item1);
+          };
         }
         this.active = function () {
           if (this.suggestions[this.select] &&
